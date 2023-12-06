@@ -1,4 +1,5 @@
 #include "lexer.hpp"
+#include "parser.hpp"
 
 #include <fstream>
 #include <iostream>
@@ -6,6 +7,7 @@
 #include <stdexcept>
 #include <string>
 #include <sstream>
+#include <vector>
 
 std::ifstream get_file_stream(std::string file_name) {
     std::ifstream ifs(file_name);
@@ -28,10 +30,8 @@ int main(int argc, char **argv) {
     while (std::getline(file_stream, line)) {
         std::stringstream line_stream(line);
         std::vector<Token> toks = get_tokens(line_stream);
-        for (const auto& t : toks) {
-            std::cout << "[Token: " << t.type << "]: " << t.value << '\n';
-            std::cout << "----" << '\n';
-        }
+        Game g = make_game(toks);
+        std::cout << g.id << std::endl;
     }
 
     return 0;

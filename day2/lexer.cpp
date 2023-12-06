@@ -13,10 +13,7 @@ Token make_token(Token_t type, std::optional<std::string> maybe_value) {
 }
 
 bool is_valid_keyword(std::string& s) {
-    if (s == "Game" || s == "red" || s == "green" || s == "blue") {
-        return true;
-    }
-    return false;
+    return s == "Game" || s == "red" || s == "green" || s == "blue";
 }
 
 std::vector<Token> get_tokens(std::stringstream& line) {

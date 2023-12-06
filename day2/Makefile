@@ -1,7 +1,7 @@
 CXX = clang++-17
 CXXFLAGS = -Wall -Werror -pedantic -std=c++17
 
-SOURCES = day2.cpp lexer.cpp
+SOURCES = day2.cpp lexer.cpp parser.cpp
 OBJECTS = $(SOURCES:.cpp=.o)
 TARGET = day2
 
