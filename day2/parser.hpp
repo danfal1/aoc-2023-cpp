@@ -13,6 +13,7 @@ enum State_t {
     STATE_S5,
     STATE_S6,
     STATE_S7,
+    STATE_ERROR,
 };
 
 typedef struct {

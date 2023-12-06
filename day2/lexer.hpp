@@ -5,7 +5,10 @@
 #include <optional>
 
 enum Token_t {
-    TOK_KW,
+    TOK_KW_GAME,
+    TOK_KW_RED,
+    TOK_KW_GREEN,
+    TOK_KW_BLUE,
     TOK_NUM,
     TOK_COL,
     TOK_SEP,
@@ -17,8 +20,4 @@ typedef struct {
     std::string value;
 } Token;
 
-Token make_token(Token_t type, std::optional<std::string> maybe_value);
-
 std::vector<Token> get_tokens(std::stringstream& line);
-
-bool is_valid_keyword(std::string& s);

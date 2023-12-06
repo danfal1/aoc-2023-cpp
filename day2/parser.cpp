@@ -6,56 +6,44 @@
 
 #define TERMINAL_STATE STATE_S5
 
-bool is_game_keyword(std::string s) {
-    return s == "Game";
-}
-
-bool is_color_keyword(std::string s) {
-    return s == "red" || s == "green" || s == "blue";
-}
-
 State_t transition(State_t current, const Token& tok) {
     switch (current) {
         case STATE_S0:
             switch (tok.type) {
-                case TOK_KW:
-                    if (!is_game_keyword(tok.value)) {
-                        throw std::runtime_error("invalid keyword");
-                    }
+                case TOK_KW_GAME:
                     return STATE_S1;
                 default:
-                    throw std::runtime_error("invalid state");
+                    return STATE_ERROR;
             }
         case STATE_S1:
             switch (tok.type) {
                 case TOK_NUM:
                     return STATE_S2;
                 default:
-                    throw std::runtime_error("invalid state");
+                    return STATE_ERROR;
             }
         case STATE_S2:
             switch (tok.type) {
                 case TOK_COL:
                     return STATE_S3;
                 default:
-                    throw std::runtime_error("invalid state");
+                    return STATE_ERROR;
             }
         case STATE_S3:
             switch (tok.type) {
                 case TOK_NUM:
                     return STATE_S4;
                 default:
-                    throw std::runtime_error("invalid state");
+                    return STATE_ERROR;
             }
         case STATE_S4:
             switch (tok.type) {
-                case TOK_KW:
-                    if(!is_color_keyword(tok.value)) {
-                        throw std::runtime_error("invalid keyword");
-                    }
+                case TOK_KW_RED:
+                case TOK_KW_GREEN:
+                case TOK_KW_BLUE:
                     return STATE_S5;
                 default:
-                    throw std::runtime_error("invalid state");
+                    return STATE_ERROR;
             }
         case STATE_S5:
             switch (tok.type) {
@@ -64,24 +52,24 @@ State_t transition(State_t current, const Token& tok) {
                 case TOK_EOR:
                     return STATE_S7;
                 default:
-                    throw std::runtime_error("invalid state");
+                    return STATE_ERROR;
             }
         case STATE_S6:
             switch (tok.type) {
                 case TOK_NUM:
                     return STATE_S4;
                 default:
-                    throw std::runtime_error("invalid state");
+                    return STATE_ERROR;
             }
         case STATE_S7:
             switch (tok.type) {
                 case TOK_NUM:
                     return STATE_S4;
                 default:
-                    throw std::runtime_error("invalid state");
+                    return STATE_ERROR;
             }
         default:
-            throw std::runtime_error("unknown state");
+            return STATE_ERROR;
     }
 }
 
