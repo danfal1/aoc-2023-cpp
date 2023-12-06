@@ -2,6 +2,7 @@
 
 #include <stdexcept>
 #include <sstream>
+#include <optional>
 
 Token make_token(Token_t type, std::optional<std::string> maybe_value) {
     Token t;

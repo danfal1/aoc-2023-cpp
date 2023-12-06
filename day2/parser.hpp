@@ -4,7 +4,7 @@
 
 #include <vector>
 
-enum State_t {
+typedef enum {
     STATE_S0,
     STATE_S1,
     STATE_S2,
@@ -14,7 +14,7 @@ enum State_t {
     STATE_S6,
     STATE_S7,
     STATE_ERROR,
-};
+} State_t;
 
 typedef struct {
     int cnt_red;

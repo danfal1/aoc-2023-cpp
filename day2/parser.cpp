@@ -3,6 +3,7 @@
 
 #include <stdexcept>
 #include <vector>
+#include <iostream>
 
 #define TERMINAL_STATE STATE_S5
 
@@ -75,16 +76,49 @@ State_t transition(State_t current, const Token& tok) {
 
 Game make_game(std::vector<Token> toks) {
     Game g;
-    Round r;
+    std::vector<Round> rounds = {{}};
 
+    int current_cnt;
+    int round_index = 0;
     State_t current = STATE_S0;
     for (const auto& tok : toks) {
         current = transition(current, tok);
+        switch (current) {
+            case STATE_S2:
+                g.id = std::stoi(tok.value);
+                break;
+            case STATE_S4:
+                current_cnt = std::stoi(tok.value);
+                break;
+            case STATE_S5:
+                switch (tok.type) {
+                    case TOK_KW_RED:
+                        rounds[round_index].cnt_red = current_cnt;
+                        break;
+                    case TOK_KW_GREEN:
+                        rounds[round_index].cnt_green = current_cnt;
+                        break;
+                    case TOK_KW_BLUE:
+                        rounds[round_index].cnt_blue = current_cnt;
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case STATE_S7:
+                rounds.push_back({});
+                round_index++;
+                break;
+            default:
+                break;
+        }
     }
 
     if (current != TERMINAL_STATE) {
-        throw std::runtime_error("end state was not terminal");
+        throw std::runtime_error("parse error");
     }
 
+    g.rounds = rounds;
     return g;
 }
+

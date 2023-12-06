@@ -32,6 +32,12 @@ int main(int argc, char **argv) {
         std::vector<Token> toks = get_tokens(line_stream);
         Game g = make_game(toks);
         std::cout << g.id << std::endl;
+        for (auto r : g.rounds) {
+            std::cout << "Red: " << r.cnt_red << " ";
+            std::cout << "Green: " << r.cnt_green << " ";
+            std::cout << "Blue: " << r.cnt_blue << '\n';
+        }
+        std::cout << "----" << '\n';
     }
 
     return 0;
