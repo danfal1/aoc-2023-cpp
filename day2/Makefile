@@ -1,5 +1,5 @@
-CXX = clang++-17
-CXXFLAGS = -Wall -Werror -pedantic -std=c++17
+CXX = g++
+CXXFLAGS = -Wall -Werror -pedantic -std=c++17 -g
 
 SOURCES = day2.cpp lexer.cpp parser.cpp
 OBJECTS = $(SOURCES:.cpp=.o)

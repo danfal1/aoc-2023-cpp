@@ -1,7 +1,6 @@
 #pragma once
 
-#include "lexer.hpp"
-
+#include <string>
 #include <vector>
 
 typedef enum {
@@ -13,8 +12,20 @@ typedef enum {
     STATE_S5,
     STATE_S6,
     STATE_S7,
+    STATE_S8,
+    STATE_S9,
+    STATE_S10,
+    STATE_S11,
+    STATE_S12,
     STATE_ERROR,
 } State_t;
+
+typedef enum {
+    COLOR_RED,
+    COLOR_GREEN,
+    COLOR_BLUE,
+    COLOR_ERROR,
+} Color_t;
 
 typedef struct {
     int cnt_red;
@@ -27,4 +38,4 @@ typedef struct {
     std::vector<Round> rounds;
 } Game;
 
-Game make_game(std::vector<Token> toks);
+Game make_game(std::string line);

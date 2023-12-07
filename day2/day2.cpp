@@ -1,15 +1,12 @@
 #include "lexer.hpp"
 #include "parser.hpp"
 
-#include <cstdlib>
+#include <exception>
 #include <fstream>
 #include <iostream>
-#include <numeric>
 #include <ostream>
 #include <stdexcept>
 #include <string>
-#include <sstream>
-#include <vector>
 
 #define MAX_RED 12
 #define MAX_GREEN 13
@@ -24,7 +21,7 @@ std::ifstream get_file_stream(std::string file_name) {
 }
 
 bool is_game_possible(Game g) {
-    for (const auto& r : g.rounds) {
+    for (auto r : g.rounds) {
         if (MAX_RED - r.cnt_red < 0 || MAX_GREEN - r.cnt_green < 0 || MAX_BLUE - r.cnt_blue < 0) {
             return false;
         }
@@ -37,7 +34,7 @@ int get_cube_power(Game g) {
     int min_green = 0;
     int min_blue = 0;
 
-    for (const auto& r: g.rounds) {
+    for (auto r: g.rounds) {
         if (min_red < r.cnt_red) {
             min_red = r.cnt_red;
         }
@@ -66,9 +63,13 @@ int main(int argc, char **argv) {
 
     std::string line;
     while (std::getline(file_stream, line)) {
-        std::stringstream line_stream(line);
-        std::vector<Token> toks = get_tokens(line_stream);
-        Game g = make_game(toks);
+        Game g;
+        try {
+            g = make_game(line);
+        } catch (std::exception& e) {
+            std::cerr << e.what() << std::endl;
+            return -2;
+        }
 
         if (is_game_possible(g)) {
             part_1_result += g.id;

@@ -1,22 +1,18 @@
 #pragma once
 
-#include <string>
-#include <vector>
-
 typedef enum {
-    TOK_KW_GAME,
-    TOK_KW_RED,
-    TOK_KW_GREEN,
-    TOK_KW_BLUE,
-    TOK_NUM,
-    TOK_COL,
+    TOK_ALPHA,
+    TOK_DIGIT,
+    TOK_WSPACE,
+    TOK_COLON,
     TOK_SEP,
     TOK_EOR,
+    TOK_ERROR,
 } Token_t;
 
-typedef struct {
+typedef struct{
     Token_t type;
-    std::string value;
+    char value;
 } Token;
 
-std::vector<Token> get_tokens(std::stringstream& line);
+Token gettok(char c);
