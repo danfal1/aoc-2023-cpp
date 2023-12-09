@@ -1,8 +1,12 @@
-#include <algorithm>
+#include "scratch_card.hpp"
+#include "game_tracker.hpp"
+
 #include <cctype>
 #include <exception>
 #include <fstream>
 #include <iostream>
+#include <memory>
+#include <ostream>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -15,11 +19,11 @@ std::ifstream get_file_stream(std::string file_name) {
     return ifs;
 }
 
-std::vector<int> load_numbers(std::string& line) {
+std::vector<int> load_numbers(std::string s) {
     std::vector<int> numbers;
 
     std::string n;
-    for (char c : line) {
+    for (char c : s) {
         if (std::isdigit(c)) {
             n.append(1, c);
         } else {
@@ -35,6 +39,33 @@ std::vector<int> load_numbers(std::string& line) {
     }
 
     return numbers;
+}
+
+std::shared_ptr<GameTracker> make_game_tracker(std::ifstream& file_stream) {
+    auto gt = std::make_shared<GameTracker>(GameTracker());
+
+    std::string line;
+    while(std::getline(file_stream, line)) {
+        int colon_pos = line.find(':');
+        int sep_pos = line.find('|');
+
+        std::string id_str;
+        for (char c : line.substr(0, colon_pos)) {
+            if (std::isdigit(c)) {
+                id_str.append(1, c);
+            }
+        }
+
+        int id = std::stoi(id_str);
+        auto winning_nums = load_numbers(line.substr(colon_pos + 1, sep_pos - colon_pos - 1));
+        auto my_nums = load_numbers(line.substr(sep_pos + 1, line.length() - sep_pos - 1));
+
+        auto s = std::make_shared<ScratchCard>(ScratchCard());
+        s->set_numbers(winning_nums, my_nums);
+        gt->add_scratch_card(id, s);
+    }
+
+    return gt;
 }
 
 int main(int argc, char **argv) {
@@ -53,39 +84,12 @@ int main(int argc, char **argv) {
         return 2;
     }
 
-    int part_1_result = 0;
-
-    std::string line;
-    while(std::getline(file_stream, line)) {
-        std::string n;
-        int colon_pos = line.find(':');
-        int sep_pos = line.find('|');
-
-        std::string winning = line.substr(colon_pos + 1, sep_pos - colon_pos - 1);
-        std::vector<int> winning_numbers = load_numbers(winning);
-
-        std::string my = line.substr(sep_pos + 1, line.length() - sep_pos);
-        std::vector<int> my_numbers = load_numbers(my);
-
-        std::vector<int> isect;
-        for (int v : my_numbers) {
-            if (std::find(winning_numbers.begin(), winning_numbers.end(), v) != winning_numbers.end()) {
-                isect.push_back(v);
-            }
-        }
-
-        if (isect.empty()) {
-            continue;
-        }
-
-        int points = 1;
-        for (unsigned i = 1; i < isect.size(); i++) {
-            points *= 2;
-        }
-        part_1_result += points;
-    }
+    auto gt = make_game_tracker(file_stream);
+    int part_1_result = gt->get_cnt_total_points();
+    int part_2_result = gt->get_cnt_total_copies(1);
 
     std::cout << part_1_result << std::endl;
+    std::cout << part_2_result << std::endl;
 
     return 0;
 }
