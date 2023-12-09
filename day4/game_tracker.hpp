@@ -13,6 +13,7 @@ public:
     void add_scratch_card(int id, std::shared_ptr<ScratchCard> s);
     int get_cnt_total_points();
     int get_cnt_total_copies(int id);
+    int get_first_id();
 private:
     int get_cnt_copies(int id);
 };

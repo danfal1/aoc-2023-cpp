@@ -49,3 +49,7 @@ int GameTracker::get_cnt_total_copies(int id) {
 
     return result;
 }
+
+int GameTracker::get_first_id() {
+    return m.begin()->first;
+}

@@ -60,8 +60,7 @@ std::shared_ptr<GameTracker> make_game_tracker(std::ifstream& file_stream) {
         auto winning_nums = load_numbers(line.substr(colon_pos + 1, sep_pos - colon_pos - 1));
         auto my_nums = load_numbers(line.substr(sep_pos + 1, line.length() - sep_pos - 1));
 
-        auto s = std::make_shared<ScratchCard>(ScratchCard());
-        s->set_numbers(winning_nums, my_nums);
+        auto s = std::make_shared<ScratchCard>(ScratchCard(winning_nums, my_nums));
         gt->add_scratch_card(id, s);
     }
 
@@ -86,7 +85,7 @@ int main(int argc, char **argv) {
 
     auto gt = make_game_tracker(file_stream);
     int part_1_result = gt->get_cnt_total_points();
-    int part_2_result = gt->get_cnt_total_copies(1);
+    int part_2_result = gt->get_cnt_total_copies(gt->get_first_id());
 
     std::cout << part_1_result << std::endl;
     std::cout << part_2_result << std::endl;

@@ -3,7 +3,7 @@
 #include <vector>
 #include <algorithm>
 
-void ScratchCard::set_numbers(std::vector<int> winning, std::vector<int> my) {
+ScratchCard::ScratchCard(std::vector<int> winning, std::vector<int> my) {
     winning_nums = winning;
     my_nums = my;
 }
